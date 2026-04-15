@@ -52,22 +52,22 @@ public class AuthController {
         throw new RuntimeException("Invalid login");
     }
 
-    // 🔥 DELETE ACCOUNT (FULL FIX)
+    //DELETE ACCOUNT
     @DeleteMapping("/delete/{id}")
     public String deleteUser(@PathVariable Long id, @RequestBody User request) {
 
         User user = repo.findById(id).orElseThrow();
 
-        // 🔒 Password check
+        //Password check
         if (!user.getPassword().equals(request.getPassword())) {
             return "WRONG PASSWORD";
         }
 
-        // 🔥 DELETE ALL TASKS FIRST
+        //DELETE ALL TASKS FIRST
         List<Task> tasks = taskRepo.findByUserId(id);
         taskRepo.deleteAll(tasks);
 
-        // 🔥 DELETE USER
+        //DELETE USER
         repo.delete(user);
 
         return "ACCOUNT DELETED";
